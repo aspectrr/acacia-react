@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Play,
   Save,
@@ -8,10 +8,9 @@ import {
   Database,
   Zap,
   Plus,
-  Eye,
   Settings,
   BarChart,
-} from "lucide-react";
+} from 'lucide-react';
 
 interface Extension {
   id: string;
@@ -29,8 +28,8 @@ interface ExtensionRoute {
   id: string;
   method: string;
   pathPattern: string;
-  patternType: "exact" | "prefix" | "regex";
-  executionType: "before" | "after" | "replace";
+  patternType: 'exact' | 'prefix' | 'regex';
+  executionType: 'before' | 'after' | 'replace';
   priority: number;
 }
 
@@ -48,21 +47,21 @@ export default function ExtensionManagement() {
   const [extensions, setExtensions] = useState<Extension[]>([]);
   const [apiEndpoints, setApiEndpoints] = useState<ApiEndpoint[]>([]);
   const [selectedExtension, setSelectedExtension] = useState<Extension | null>(
-    null,
+    null
   );
   const [activeTab, setActiveTab] = useState<
-    "extensions" | "api-discovery" | "create"
-  >("extensions");
+    'extensions' | 'api-discovery' | 'create'
+  >('extensions');
   const [isCreating, setIsCreating] = useState(false);
 
   // Mock data for demo
   useEffect(() => {
     setExtensions([
       {
-        id: "1",
-        name: "AI Lead Scorer",
+        id: '1',
+        name: 'AI Lead Scorer',
         description:
-          "Automatically scores leads based on profile data and engagement",
+          'Automatically scores leads based on profile data and engagement',
         code: `// Add AI lead scoring to user objects
 const response = await response.json();
 if (Array.isArray(response.users)) {
@@ -76,22 +75,22 @@ return new Response(JSON.stringify(response));`,
         version: 3,
         routes: [
           {
-            id: "1",
-            method: "GET",
-            pathPattern: "/api/users",
-            patternType: "exact",
-            executionType: "after",
+            id: '1',
+            method: 'GET',
+            pathPattern: '/api/users',
+            patternType: 'exact',
+            executionType: 'after',
             priority: 1,
           },
         ],
-        createdAt: "2024-01-15T10:30:00Z",
-        updatedAt: "2024-01-20T14:22:00Z",
+        createdAt: '2024-01-15T10:30:00Z',
+        updatedAt: '2024-01-20T14:22:00Z',
       },
       {
-        id: "2",
-        name: "Email Template Generator",
+        id: '2',
+        name: 'Email Template Generator',
         description:
-          "Generates personalized email templates for customer outreach",
+          'Generates personalized email templates for customer outreach',
         code: `// Generate personalized email templates
 const data = await request.json();
 data.emailTemplate = await generatePersonalizedEmail(data.customer);
@@ -104,44 +103,44 @@ return new Request(request.url, {
         version: 1,
         routes: [
           {
-            id: "2",
-            method: "POST",
-            pathPattern: "/api/emails/compose",
-            patternType: "exact",
-            executionType: "before",
+            id: '2',
+            method: 'POST',
+            pathPattern: '/api/emails/compose',
+            patternType: 'exact',
+            executionType: 'before',
             priority: 1,
           },
         ],
-        createdAt: "2024-01-18T09:15:00Z",
-        updatedAt: "2024-01-18T09:15:00Z",
+        createdAt: '2024-01-18T09:15:00Z',
+        updatedAt: '2024-01-18T09:15:00Z',
       },
     ]);
 
     setApiEndpoints([
       {
         id: 1,
-        method: "GET",
-        path: "/api/users",
+        method: 'GET',
+        path: '/api/users',
         hitCount: 342,
-        lastSeen: "2024-01-20T15:30:00Z",
+        lastSeen: '2024-01-20T15:30:00Z',
         sampleResponse: {
-          users: [{ id: 1, name: "John Doe", email: "john@example.com" }],
+          users: [{ id: 1, name: 'John Doe', email: 'john@example.com' }],
         },
       },
       {
         id: 2,
-        method: "POST",
-        path: "/api/emails/compose",
+        method: 'POST',
+        path: '/api/emails/compose',
         hitCount: 89,
-        lastSeen: "2024-01-20T14:45:00Z",
-        sampleRequest: { customer: { id: 1 }, subject: "Follow up" },
+        lastSeen: '2024-01-20T14:45:00Z',
+        sampleRequest: { customer: { id: 1 }, subject: 'Follow up' },
       },
       {
         id: 3,
-        method: "GET",
-        path: "/api/dashboard/stats",
+        method: 'GET',
+        path: '/api/dashboard/stats',
         hitCount: 156,
-        lastSeen: "2024-01-20T15:28:00Z",
+        lastSeen: '2024-01-20T15:28:00Z',
       },
     ]);
   }, []);
@@ -156,11 +155,11 @@ return new Request(request.url, {
               <span
                 className={`px-2 py-1 rounded-full text-xs font-medium ${
                   extension.enabled
-                    ? "bg-green-100 text-green-800"
-                    : "bg-gray-100 text-gray-600"
+                    ? 'bg-green-100 text-green-800'
+                    : 'bg-gray-100 text-gray-600'
                 }`}
               >
-                {extension.enabled ? "Active" : "Disabled"}
+                {extension.enabled ? 'Active' : 'Disabled'}
               </span>
               <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
                 v{extension.version}
@@ -173,7 +172,7 @@ return new Request(request.url, {
             <div className="flex items-center gap-4 text-sm text-gray-500">
               <span>
                 {extension.routes.length} route
-                {extension.routes.length !== 1 ? "s" : ""}
+                {extension.routes.length !== 1 ? 's' : ''}
               </span>
               <span>
                 Updated {new Date(extension.updatedAt).toLocaleDateString()}
@@ -213,11 +212,11 @@ return new Request(request.url, {
               >
                 <span
                   className={`w-2 h-2 rounded-full ${
-                    route.method === "GET"
-                      ? "bg-green-500"
-                      : route.method === "POST"
-                        ? "bg-blue-500"
-                        : "bg-orange-500"
+                    route.method === 'GET'
+                      ? 'bg-green-500'
+                      : route.method === 'POST'
+                      ? 'bg-blue-500'
+                      : 'bg-orange-500'
                   }`}
                 ></span>
                 {route.method} {route.pathPattern}
@@ -233,8 +232,8 @@ return new Request(request.url, {
   const ExtensionEditor = ({ extension }: { extension: Extension }) => {
     const [editedExtension, setEditedExtension] = useState(extension);
     const [activeEditorTab, setActiveEditorTab] = useState<
-      "code" | "routes" | "test"
-    >("code");
+      'code' | 'routes' | 'test'
+    >('code');
 
     return (
       <div className="bg-white rounded-lg border border-gray-200">
@@ -257,17 +256,17 @@ return new Request(request.url, {
 
           <div className="flex gap-1 mt-4">
             {[
-              { id: "code", label: "Code", icon: Code },
-              { id: "routes", label: "Routes", icon: Settings },
-              { id: "test", label: "Test", icon: Play },
+              { id: 'code', label: 'Code', icon: Code },
+              { id: 'routes', label: 'Routes', icon: Settings },
+              { id: 'test', label: 'Test', icon: Play },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveEditorTab(tab.id as any)}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
                   activeEditorTab === tab.id
-                    ? "bg-blue-100 text-blue-700"
-                    : "text-gray-600 hover:text-gray-900"
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
                 <tab.icon size={14} />
@@ -278,7 +277,7 @@ return new Request(request.url, {
         </div>
 
         <div className="p-6">
-          {activeEditorTab === "code" && (
+          {activeEditorTab === 'code' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Extension Code
@@ -295,14 +294,14 @@ return new Request(request.url, {
                 placeholder="Write your extension code here..."
               />
               <p className="mt-2 text-xs text-gray-500">
-                Your code will receive <code>request</code> and{" "}
+                Your code will receive <code>request</code> and{' '}
                 <code>response</code> parameters depending on the execution
                 type.
               </p>
             </div>
           )}
 
-          {activeEditorTab === "routes" && (
+          {activeEditorTab === 'routes' && (
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-medium">Route Configuration</h3>
@@ -373,7 +372,7 @@ return new Request(request.url, {
             </div>
           )}
 
-          {activeEditorTab === "test" && (
+          {activeEditorTab === 'test' && (
             <div>
               <h3 className="font-medium mb-4">Test Extension</h3>
               <div className="bg-gray-50 rounded-lg p-4 mb-4">
@@ -427,11 +426,11 @@ return new Request(request.url, {
               <div className="flex items-center gap-3">
                 <span
                   className={`px-2 py-1 rounded text-xs font-medium ${
-                    endpoint.method === "GET"
-                      ? "bg-green-100 text-green-800"
-                      : endpoint.method === "POST"
-                        ? "bg-blue-100 text-blue-800"
-                        : "bg-orange-100 text-orange-800"
+                    endpoint.method === 'GET'
+                      ? 'bg-green-100 text-green-800'
+                      : endpoint.method === 'POST'
+                      ? 'bg-blue-100 text-blue-800'
+                      : 'bg-orange-100 text-orange-800'
                   }`}
                 >
                   {endpoint.method}
@@ -500,7 +499,7 @@ return new Request(request.url, {
             </div>
 
             <button
-              onClick={() => setActiveTab("create")}
+              onClick={() => setActiveTab('create')}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
             >
               <Plus size={16} />
@@ -510,17 +509,17 @@ return new Request(request.url, {
 
           <div className="flex gap-1 mt-6">
             {[
-              { id: "extensions", label: "Extensions", icon: Code },
-              { id: "api-discovery", label: "API Discovery", icon: Database },
-              { id: "create", label: "Create New", icon: Plus },
+              { id: 'extensions', label: 'Extensions', icon: Code },
+              { id: 'api-discovery', label: 'API Discovery', icon: Database },
+              { id: 'create', label: 'Create New', icon: Plus },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
                   activeTab === tab.id
-                    ? "bg-blue-100 text-blue-700"
-                    : "text-gray-600 hover:text-gray-900"
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
                 <tab.icon size={16} />
@@ -536,7 +535,7 @@ return new Request(request.url, {
           <ExtensionEditor extension={selectedExtension} />
         ) : (
           <>
-            {activeTab === "extensions" && (
+            {activeTab === 'extensions' && (
               <div>
                 <div className="grid gap-6">
                   {extensions.map((extension) => (
@@ -546,9 +545,9 @@ return new Request(request.url, {
               </div>
             )}
 
-            {activeTab === "api-discovery" && <ApiDiscoveryTab />}
+            {activeTab === 'api-discovery' && <ApiDiscoveryTab />}
 
-            {activeTab === "create" && (
+            {activeTab === 'create' && (
               <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
                 <div className="max-w-md mx-auto">
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
