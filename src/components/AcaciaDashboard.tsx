@@ -52,7 +52,7 @@ export default function ExtensionManagement() {
   const [activeTab, setActiveTab] = useState<
     'extensions' | 'api-discovery' | 'create'
   >('extensions');
-  const [isCreating, setIsCreating] = useState(false);
+  // const [isCreating, setIsCreating] = useState(false);
 
   // Mock data for demo
   useEffect(() => {
