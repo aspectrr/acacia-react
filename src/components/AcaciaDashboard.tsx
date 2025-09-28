@@ -43,7 +43,7 @@ interface ApiEndpoint {
   sampleResponse?: any;
 }
 
-export default function ExtensionManagement() {
+export function AcaciaDashboard() {
   const [extensions, setExtensions] = useState<Extension[]>([]);
   const [apiEndpoints, setApiEndpoints] = useState<ApiEndpoint[]>([]);
   const [selectedExtension, setSelectedExtension] = useState<Extension | null>(

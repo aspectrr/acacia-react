@@ -17,84 +17,97 @@ const packageJson = JSON.parse(
 const external = [
   ...Object.keys(packageJson.dependencies || {}),
   ...Object.keys(packageJson.peerDependencies || {}),
+  'react',
+  'react-dom',
   'react/jsx-runtime',
+];
+
+// Shared plugins to reduce duplication
+const basePlugins = [
+  resolve({
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+  }),
+  commonjs(),
+  postcss({
+    minimize: true,
+    modules: true,
+    extract: 'lib/styles/index.css',
+    inject: false,
+  }),
 ];
 
 export default defineConfig([
   // ESM build configuration
   {
-    input: 'src/index.ts',
+    input: {
+      index: 'src/index.ts',
+      'components/index': 'src/components/index.ts',
+      'utils/index': 'src/utils/index.ts',
+      'types/index': 'src/types/index.ts',
+    },
     output: {
       format: 'esm',
-      sourcemap: true,
+      dir: 'lib/esm',
       preserveModules: true,
       preserveModulesRoot: 'src',
-      dir: 'lib/esm',
+      sourcemap: true,
     },
     external,
     plugins: [
-      resolve(),
-      commonjs(),
+      ...basePlugins,
       typescript({
         tsconfig: './tsconfig.json',
         declaration: false,
         sourceMap: true,
-        inlineSources: true,
-        outDir: 'lib/esm',
+        outDir: './lib/esm', // Ensure this matches the output.dir
+        rootDir: './src',
       }),
       babel({
         babelHelpers: 'bundled',
         exclude: 'node_modules/**',
         extensions: ['.ts', '.tsx'],
       }),
-      postcss({
-        minimize: true,
-        modules: true,
-        extract: 'lib/styles/index.css',
-      }),
-      terser(),
     ],
   },
   // CommonJS build configuration
   {
-    input: 'src/index.ts',
+    input: {
+      index: 'src/index.ts',
+      'components/index': 'src/components/index.ts',
+      'utils/index': 'src/utils/index.ts',
+      'types/index': 'src/types/index.ts',
+    },
     output: {
       format: 'cjs',
-      sourcemap: true,
+      dir: 'lib/cjs',
       preserveModules: true,
       preserveModulesRoot: 'src',
-      dir: 'lib/cjs',
+      exports: 'named',
+      sourcemap: true,
     },
     external,
     plugins: [
-      resolve(),
-      commonjs(),
+      ...basePlugins,
       typescript({
         tsconfig: './tsconfig.json',
         declaration: false,
         sourceMap: true,
-        inlineSources: true,
-        outDir: 'lib/cjs',
+        outDir: './lib/cjs', // Ensure this matches the output.dir
+        rootDir: './src',
       }),
       babel({
         babelHelpers: 'bundled',
         exclude: 'node_modules/**',
         extensions: ['.ts', '.tsx'],
       }),
-      postcss({
-        minimize: true,
-        modules: true,
-        extract: 'lib/styles/index.css',
-        inject: false,
-      }),
     ],
   },
-  // Type declarations build
+  // Type declarations
   {
     input: 'src/index.ts',
     output: {
       dir: 'lib/types',
-      format: 'es',
+      format: 'esm',
     },
     external,
     plugins: [dts()],

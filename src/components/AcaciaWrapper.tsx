@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { AcaciaWrapperProps, ExtensionField } from '../types';
 import { flattenObject, findUnrenderedFields } from '../utils';
 
-export default function AcaciaWrapper({
+export function AcaciaWrapper({
   children,
   data = {},
   className = '',
