@@ -21,6 +21,28 @@ const external = [
   'react/jsx-runtime',
 ];
 
+// Components that should have 'use client' directive
+const clientComponents = ['AcaciaWrapper', 'AcaciaDashboard'];
+
+// Plugin to add 'use client' directive to component files
+const addUseClientDirective = () => {
+  return {
+    name: 'add-use-client-directive',
+    generateBundle(_, bundle) {
+      Object.keys(bundle).forEach((fileName) => {
+        const chunk = bundle[fileName];
+        // Check if this chunk is one of our client components
+        if (
+          chunk.type === 'chunk' &&
+          clientComponents.some((comp) => fileName.includes(comp))
+        ) {
+          chunk.code = `'use client';\n\n${chunk.code}`;
+        }
+      });
+    },
+  };
+};
+
 // Shared plugins to reduce duplication
 const basePlugins = [
   resolve({
@@ -41,6 +63,8 @@ export default defineConfig([
     input: {
       index: 'src/index.ts',
       'components/index': 'src/components/index.ts',
+      'components/AcaciaWrapper': 'src/components/AcaciaWrapper.tsx',
+      'components/AcaciaDashboard': 'src/components/AcaciaDashboard.tsx',
       'utils/index': 'src/utils/index.ts',
       'types/index': 'src/types/index.ts',
     },
@@ -58,7 +82,7 @@ export default defineConfig([
         tsconfig: './tsconfig.json',
         declaration: false,
         sourceMap: true,
-        outDir: './lib/esm', // Ensure this matches the output.dir
+        outDir: './lib/esm',
         rootDir: './src',
       }),
       babel({
@@ -66,6 +90,7 @@ export default defineConfig([
         exclude: 'node_modules/**',
         extensions: ['.ts', '.tsx'],
       }),
+      addUseClientDirective(),
     ],
   },
   // CommonJS build configuration
@@ -73,6 +98,8 @@ export default defineConfig([
     input: {
       index: 'src/index.ts',
       'components/index': 'src/components/index.ts',
+      'components/AcaciaWrapper': 'src/components/AcaciaWrapper.tsx',
+      'components/AcaciaDashboard': 'src/components/AcaciaDashboard.tsx',
       'utils/index': 'src/utils/index.ts',
       'types/index': 'src/types/index.ts',
     },
@@ -91,7 +118,7 @@ export default defineConfig([
         tsconfig: './tsconfig.json',
         declaration: false,
         sourceMap: true,
-        outDir: './lib/cjs', // Ensure this matches the output.dir
+        outDir: './lib/cjs',
         rootDir: './src',
       }),
       babel({
@@ -99,6 +126,7 @@ export default defineConfig([
         exclude: 'node_modules/**',
         extensions: ['.ts', '.tsx'],
       }),
+      addUseClientDirective(),
     ],
   },
   // Type declarations
